@@ -1,0 +1,134 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% static "img" as img %}
+{% block contents %}
+
+<section data-settings="particles-1" class="main-section crumina-flying-balls particles-js bg-1">
+    <div class="container">
+        <div class="row medium-padding120 align-center">
+            <div class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
+                <header class="crumina-module crumina-heading heading--h2 heading--with-decoration">
+                    <div class="heading-sup-title">CNX Coin Market</div>
+                    <h2 class="heading-title heading--half-colored">Buy Cryptocurrency</h2>
+                    <div class="heading-text">
+                        Discover the future of finance with CNX Coin Market. Our platform allows you to securely
+                        buy and invest in a wide range of cryptocurrencies. Join the revolution and take control
+                        of your financial destiny today.
+                    </div>
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row medium-padding120 align-center">
+            <div class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
+                <header class="crumina-module crumina-heading heading--h2 heading--with-decoration">
+                    <div class="heading-sup-title">CNX Coin Market</div>
+                    <h2 class="heading-title heading--half-colored">Real-Time Cryptocurrency Prices</h2>
+                    <div class="heading-text">
+                        Stay up-to-date with the latest cryptocurrency prices and market trends. Our platform
+                        provides real-time data for the most popular digital currencies, ensuring you have the
+                        information you need to make informed investment decisions.
+                    </div>
+                </header>
+            </div>
+        </div>
+        <div class="row medium-padding120">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Icon</th>
+                                <th>Name</th>
+                                <th>Market Cap</th>
+                                <th>Price</th>
+                                <th>Change</th>
+                                <th>Circulating Supply</th>
+                                <th>Payment Method</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="crypto-table-body">
+                            <!-- Data will be inserted here by JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="footer-text">
+                                        Cryptocurrency prices are highly volatile and subject to market
+                                        conditions. Ensure you conduct thorough research and consider consulting
+                                        a financial advisor before making any investment decisions.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <a class="back-to-top" href="#">
+        <svg class="woox-icon icon-top-arrow">
+            <use xlink:href="svg-icons/sprites/icons.svg#icon-top-arrow"></use>
+        </svg>
+    </a>
+
+    <script>
+        document.getElementById('year').innerText = new Date().getFullYear() + '.';
+
+        // Function to fetch cryptocurrency data
+        async function fetchCryptoData() {
+            const response = await fetch('https://api.coinranking.com/v2/coins', {
+                headers: {
+                    'x-access-token': 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225'
+                }
+            });
+            const data = await response.json();
+            return data.data.coins.slice(0, 10); // Get only the top 10 coins
+        }
+
+        // Function to format large numbers with commas
+        function formatNumber(num) {
+            if (num === undefined || num === null) {
+                return 'N/A'; // Return 'N/A' or another placeholder if the number is undefined or null
+            }
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Function to populate the table with cryptocurrency data
+        function populateTable(coins) {
+            const tableBody = document.getElementById('crypto-table-body');
+            coins.forEach((coin, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><img src="${coin.iconUrl}" alt="${coin.name} icon" width="32" height="32"></td>
+                    <td>${coin.name}</td>
+                    <td>$${formatNumber(coin.marketCap)}</td>
+                    <td>$${formatNumber(coin.price)}</td>
+                    <td>${coin.change}%</td>
+                    <td>${formatNumber(coin.circulatingSupply)}</td>
+                    <td><a href="https://www.coinbase.com/price/${coin.symbol.toLowerCase()}" target="_blank">Coinbase</a> | <a href="https://www.binance.com/en/trade/${coin.symbol.toUpperCase()}_USDT" target="_blank">Binance</a></td>
+                    <td><a class="btn btn-primary" href="https://www.coinbase.com/price/${coin.symbol.toLowerCase()}" target="_blank">Buy</a></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fetch and display the data when the page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            const coins = await fetchCryptoData();
+            coins.sort((a, b) => b.marketCap - a.marketCap); // Sort by market cap, high to low
+            populateTable(coins);
+        });
+    </script>
+</footer>
+
+{% endblock contents %}

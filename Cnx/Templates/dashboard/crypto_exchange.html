@@ -1,0 +1,351 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% static "images" as img %}
+{% static "assests" as assests %}
+{% load humanize %}
+
+{% block contents %}
+
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+        <!-- partial -->
+        <div class="main-panel mb-5 ">
+          <div class="content-wrapper mt-5">
+            <div class="row flex-grow">
+                <!-- Card 1: USD Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card card-rounded shadow  bg-light">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Main balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3"><div class="d-flex align-items-center">
+                                            <img src="{% static 'img/dollar.png' %}" alt="USDT Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            USD
+                                          </div></h4>
+                                        <h2 class="me-2 fw-bold">${{ request.user.balance.usdt_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2: ETH Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash ">
+                                   Eth balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3 ">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'img/if_etherium_eth_ethcoin_crypto_2844386.png' %}" height="30" width="30" alt="ETH Logo" class="me-2 crypto-logo">
+                                                ETH
+                                              </div>
+                                        </h4>
+                                        <h2 class="me-2 fw-bold ">{{ request.user.balance.eth_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3: BTC Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Btc balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">    <img src="{% static 'img/if_bitcoin_2745023.png' %}" alt="BTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            BTC</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.btc_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4: LTC Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Ltc balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">    <img src="{% static 'img/if_litecion_ltc_lite_coin_crypto_2844390.png' %}" alt="LTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            LTC</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.ltc_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5: TRX Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Trx balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">     <img src="{% static 'img/trc.png' %}" height="30" width="30" alt="TRX Logo" class="me-2 crypto-logo">
+                                            TRX</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.trx_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6: BCH Balance -->
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Bch balance</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3"><img src="{% static 'img/bch.png' %}" height="30" width="30" alt="BCH Logo" class="me-2 crypto-logo">
+                                            BCH</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.bch_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row flex-grow">
+                <!-- Crypto Exchange Section -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow text-dark card-rounded">
+                        <div class="card-body">
+                            <h4 class="card-title card-title-dash">Crypto Exchange</h4>
+                            <form id="crypto-exchange-form">
+                                <div class="form-group">
+                                    <label for="from-currency">From</label>
+                                    <select id="source_account" class="form-control text-dark bg-white">
+                                        <option value="BTC">BTC - Bitcoin</option>
+                                        <option value="ETH">ETH - Ethereum</option>
+                                        <option value="USDT">USDT - Tether</option>
+                                        <option value="LTC">LTC - Litecoin</option>
+                                        <option value="TRX">TRX - Tron</option>
+                                        <option value="BCH">BCH - Bitcoin Cash</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="to-currency">To</label>
+                                    <select id="Destination_account" class="form-control text-dark bg-white">
+                                        <option value="BTC">BTC - Bitcoin</option>
+                                        <option value="ETH">ETH - Ethereum</option>
+                                        <option value="USDT">USDT - Tether</option>
+                                        <option value="LTC">LTC - Litecoin</option>
+                                        <option value="TRX">TRX - Tron</option>
+                                        <option value="BCH">BCH - Bitcoin Cash</option>
+                                    </select>
+                                </div>
+                                <div id="exchange-quantity" class="mt-3"></div>
+                                <div class="form-group">
+                                    <label for="amount">Amount</label>
+                                    <input type="number" id="amount" class="form-control" placeholder="Enter amount">
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="exchangeCrypto()">Exchange</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+           
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  text-dark card-rounded m-0">
+                        <div class="card-body">
+                            <h4 class="card-title card-title-dash text-center">Crypto Prices Chart</h4>
+                            <canvas id="crypto-prices-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
+                const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
+                const getBalancesUrl = '{% url "get_balances" %}';
+                const updateBalancesUrl = '{% url "update_balances" %}';  // URL to update balances
+                
+                async function fetchExchangeRates() {
+                    try {
+                        const response = await fetch(coinsUrl, {
+                            headers: {
+                                'x-access-token': apiKey
+                            }
+                        });
+                        const data = await response.json();
+                        return data.data.coins.reduce((acc, coin) => {
+                            acc[coin.symbol] = parseFloat(coin.price);
+                            return acc;
+                        }, {});
+                    } catch (error) {
+                        console.error('Error fetching exchange rates:', error);
+                        return null;
+                    }
+                }
+                
+                async function fetchUserBalances() {
+                    try {
+                        const response = await fetch(getBalancesUrl);
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to fetch balances');
+                        }
+                        return await response.json();
+                    } catch (error) {
+                        console.error('Error fetching user balances:', error);
+                        return null;
+                    }
+                }
+                
+                async function updateUserBalances(newBalances) {
+                    const csrfToken = getCsrfToken();
+                    if (!csrfToken) {
+                        console.error('CSRF token is missing');
+                        Swal.fire('Error', 'CSRF token is missing. Please reload the page and try again.', 'error');
+                        return null;
+                    }
+                
+                    try {
+                        const response = await fetch(updateBalancesUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken
+                            },
+                            body: JSON.stringify(newBalances)
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to update balances');
+                        }
+                        return await response.json();
+                    } catch (error) {
+                        console.error('Error updating user balances:', error);
+                        Swal.fire('Error', 'Failed to update balances. Please try again later.', 'error');
+                        return null;
+                    }
+                }
+                
+                function getCsrfToken() {
+                    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+                    if (csrfTokenMeta) {
+                        return csrfTokenMeta.getAttribute('content');
+                    } else {
+                        console.error('CSRF token meta tag not found.');
+                        return null;
+                    }
+                }
+                
+                async function exchangeCrypto() {
+                    const fromCurrency = document.getElementById('source_account').value;
+                    const toCurrency = document.getElementById('Destination_account').value;
+                    const amount = parseFloat(document.getElementById('amount').value);
+                
+                    if (isNaN(amount) || amount <= 0) {
+                        Swal.fire('Invalid Amount', 'Please enter a valid amount.', 'error');
+                        return;
+                    }
+                
+                    const balances = await fetchUserBalances();
+                    if (!balances) {
+                        Swal.fire('Error', 'Failed to fetch balances. Please try again later.', 'error');
+                        return;
+                    }
+                
+                    if (balances[fromCurrency] < amount) {
+                        Swal.fire('Insufficient Balance', 'You do not have enough balance in the source account.', 'error');
+                        return;
+                    }
+                
+                    const exchangeRates = await fetchExchangeRates();
+                    if (!exchangeRates) {
+                        Swal.fire('Error', 'Failed to fetch exchange rates. Please try again later.', 'error');
+                        return;
+                    }
+                
+                    const fromRate = exchangeRates[fromCurrency];
+                    const toRate = exchangeRates[toCurrency];
+                
+                    if (!fromRate || !toRate) {
+                        Swal.fire('Invalid Currency', 'Invalid currency selection.', 'error');
+                        return;
+                    }
+                
+                    // Calculate exchange amount
+                    const exchangedAmount = (amount * fromRate) / toRate;
+                
+                    // Confirm exchange with user
+                    const result = await Swal.fire({
+                        title: 'Confirm Exchange',
+                        text: `You will exchange ${amount} ${fromCurrency} to ${exchangedAmount.toFixed(7)} ${toCurrency}. Do you want to continue?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, exchange it!',
+                        cancelButtonText: 'Cancel'
+                    });
+                
+                    if (result.isConfirmed) {
+                        // Deduct from source and add to destination
+                        const newBalances = { ...balances };
+                        newBalances[fromCurrency] -= amount;
+                        newBalances[toCurrency] += exchangedAmount;
+                
+                        // Update balances on the server
+                        const updatedBalances = await updateUserBalances(newBalances);
+                        if (updatedBalances) {
+                            Swal.fire('Exchange Successful', `You have successfully exchanged ${amount} ${fromCurrency} to ${exchangedAmount.toFixed(7)} ${toCurrency}.`, 'success');
+                        } else {
+                            Swal.fire('Error', 'Failed to update balances. Please try again later.', 'error');
+                        }
+                    }
+                }
+                </script>
+                                
+            
+        {% endblock contents %}
+            

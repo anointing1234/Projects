@@ -1,0 +1,17 @@
+<!-- templates/admin/update_wallet_addresses.html -->
+
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<div class="module">
+  <form method="post" action="{% url 'admin:update_wallet_addresses' wallet_type %}">
+    {% csrf_token %}
+    <h2>Update Wallet Addresses for {{ wallet_type }}</h2>
+    <label for="id_address">New Address:</label>
+    <input type="text" id="id_address" name="address" value="Default_Address" required>
+    <br><br>
+    <button type="submit">Update Addresses</button>
+  </form>
+</div>
+{% endblock %}

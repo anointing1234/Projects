@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/plugins.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/theme-styles.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blocks.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/widgets.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700i,900," rel="stylesheet">
+
+    <style>
+        .inner-form {
+            border-radius: 30px;
+        }
+        .alert-sm {
+            padding: 0.5rem 1rem;
+            font-size: 10px;
+            color: white;
+        }
+        .alert p {
+            margin-bottom: 0;
+            font-size: 10px;
+        }
+        .form-input {
+            margin: 0;
+            width: 100px;
+            height: 50px;
+            font-size: 10px;
+        }
+        .form-label {
+            font-size: 10px;
+        }
+        .btn--loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .btn--loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            margin-left: -10px;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            border-top-color: yellow;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="crumina-grid">
+    <div class="main-content-wrapper crumina-flying-balls particles-js bg-1">
+        <section class="py-4">
+            <div class="container-fluid mt-5 pt-4">
+                <form class="container form-dark mt-3" method="post" action="{% url 'signin' %}" id="loginForm">
+                    {% csrf_token %}
+                    <div class="card bg-transparent d-flex align-item-center">
+                        <div class="container bg-dark py-3 inner-form mt-5 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                            <header class="text-center mb-2">
+                                <h3 class="heading-title">Login</h3>
+                                <p class="text-light">*Please fill all fields*</p>
+                            </header>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <input type="hidden" class="message" data-type="{{ message.tags }}" data-content="{{ message }}" />
+                                {% endfor %}
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <label class="form-label fs-5">Email<abbr class="required" title="required">:</abbr></label>
+                                    <input class="form-input form-input-sm w-100 text-dark" type="text" placeholder="Enter email" name="email" required>
+                                    {% if form.email.errors %}
+                                        <div class="alert alert-sm alert-danger text-light" role="alert">
+                                            {% for error in form.email.errors %}
+                                                <p>{{ error }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <label class="form-label fs-5">Password<abbr class="required" title="required">:</abbr></label>
+                                    <input class="form-input form-input-sm w-100 text-dark" type="password" placeholder="Enter password" name="password" required>
+                                    {% if form.password.errors %}
+                                        <div class="alert alert-sm alert-danger text-light" role="alert">
+                                            {% for error in form.password.errors %}
+                                                <p>{{ error }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="checkbox checkbox--style d-flex justify-content-center">
+                                <label class="text-light">
+                                    <div><a id="forgotPasswordLink" class="link-underlined text-light" href="#">forgot password</a></div>
+                                    <a class="link-underlined text-info" href="{% url 'signup' %}">Don't have an account? click here to signup</a>
+                                </label>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" id="loginButton" class="btn btn-warning px-5 text-dark py-2">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer id="site-footer" class="footer">
+        <canvas id="can"></canvas>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0 col-xs-12">
+                    <div class="widget w-info">
+                        <a href="index-2.html">
+                            <h5 class="site-logo">
+                                <img height="50px" width="50px" src="{% static 'img/bitcoin_12560170.png' %}" alt="Woox">
+                                Cnx
+                            </h5>
+                        </a>
+                        <p>Welcome to Cnx Trade Investment Site, where we strive to provide clear and insightful information about the evolving world of trade and investment. Our goal is to empower you with the knowledge and tools needed to navigate the complexities of the financial markets.
+                        </p>
+                        <p>Stay connected with us for the latest updates on investment opportunities and market trends. Join our community to gain valuable insights from industry experts and participate in discussions about the future of finance. Together, we can seize emerging opportunities and achieve financial success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0 col-xs-12">
+                        <span id="year"></span>
+                        <span><a href="index-2.html">Cnx Trade</a> - Investment changing lives.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById('year').innerText = new Date().getFullYear() + '.';
+        </script>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var loginButton = document.getElementById('loginButton');
+            loginButton.classList.add('btn--loading');
+            setTimeout(function () {
+                e.target.submit();
+            }, 500);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                Swal.fire({
+                    icon: message.dataset.type === "error" ? "error" : "success",
+                    title: message.dataset.content,
+                    showConfirmButton: false,
+                    timer: 1000,
+                    willClose: () => {
+                        if (message.dataset.type === "success") {
+                            window.location.href = "{% url 'home' %}";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('forgotPasswordLink').addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Enter your email address',
+                input: 'email',
+                inputPlaceholder: 'Enter your email address',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel',
+                preConfirm: (email) => {
+                    return fetch("{% url 'verify_email' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        body: JSON.stringify({ email: email })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.exists) {
+                            return fetch("{% url 'send_reset_password_link' %}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": "{{ csrf_token }}"
+                                },
+                                body: JSON.stringify({ email: email })
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Email not found. Please try again.'
+                            });
+                        }
+                    })
+                    .then(response => {
+                        if (response && response.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Password reset link sent',
+                                text: 'Please check your email for the password reset link.'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'There was an error. Please try again.'
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% load static %}
+{% static "img" as img %}
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer id="site-footer" class="footer">
+        <canvas id="can"></canvas>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0 col-xs-12">
+                    <div class="widget w-info">
+                        <a href="index-2.html">
+                            <h5 class="site-logo">
+                                <img height="50px" width="50px" src="{% static 'img/bitcoin_12560170.png' %}" alt="Woox">
+                                Cnx
+                            </h5>
+                        </a>
+                        <p>Welcome to Cnx Trade Investment Site, where we strive to provide clear and
+                            insightful
+                            information about the evolving world of trade and investment. Our goal is to
+                            empower you
+                            with the knowledge and tools needed to navigate the complexities of the
+                            financial markets.
+                        </p>
+                        <p>Stay connected with us for the latest updates on investment opportunities and
+                            market trends.
+                            Join our community to gain valuable insights from industry experts and
+                            participate in
+                            discussions about the future of finance. Together, we can seize emerging
+                            opportunities and
+                            achieve financial success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0 col-xs-12">
+                        <span id="year"></span>
+                        <span><a href="index-2.html">Cnx Trade</a> - Investment changing lifes.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a class="back-to-top" href="#">
+            <svg class="woox-icon icon-top-arrow">
+                <use xlink:href="svg-icons/sprites/icons.svg#icon-top-arrow"></use>
+            </svg>
+        </a>
+
+        <script>
+            document.getElementById('year').innerText = new Date().getFullYear() + '.';
+        </script>
+    </footer>

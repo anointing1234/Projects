@@ -1,0 +1,273 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% static "img" as img %}
+{% block contents %}
+
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'css/rtl.css' %}">-->
+    <style>
+        .accordion-button {
+            display: block;
+            width: 100%;
+            font-size: small;
+            text-align: left;
+            background-color: white;
+            border: none;
+            padding: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .accordion-collapse {
+            display: none;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+
+        .accordion-collapse.active {
+            display: block;
+            max-height: 500px;
+            /* Adjust as needed */
+        }
+
+
+
+        .accordion-body {
+            padding: 5px;
+            background-color: white;
+            border-top: 1px solid #dddddd;
+        }
+
+        .accordion-item+.accordion-item {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .accordion-button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .accordion-body {
+                padding: 8px;
+            }
+        }
+    </style>
+
+
+
+  
+        <section data-settings="particles-1"
+            class="main-section crumina-flying-balls particles-js bg-1 medium-padding120">
+            <div class="container">
+                <div class="row align-center">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 mt-5 pt-5">
+                        <header class="crumina-module crumina-heading heading--h2 heading--with-decoration">
+                            <div class="heading-sup-title">CNX Trade Platform</div>
+                            <h2 class="heading-title heading--half-colored">Enhance Your Trading Experience with MT4/MT5
+                            </h2>
+                            <div class="heading-text">Discover the advantages of using MT4/MT5 for your trading
+                                activities with CNXTrade. Our platform provides robust tools, reliable data, and an
+                                unparalleled trading experience to help you achieve your financial goals.</div>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="medium-padding120">
+            <div class="container">
+                <div class="row pb60">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <article class="hentry post post-standard has-post-thumbnail">
+                            <div class="post-content">
+                                <header class="entry-header">
+                                    <h2 class="entry-title text-light">Download and Use MT4/MT5 Trading Platforms</h2>
+                                </header>
+                                <div class="entry-content text-light">
+                                    <p>At CNXTrade, we support the industry-leading MetaTrader 4 (MT4) and MetaTrader 5
+                                        (MT5) platforms to enhance your trading experience. Whether you are a beginner
+                                        or a seasoned trader, our platform provides the tools you need to succeed.</p>
+
+                                    <h3 class="text-light">How to Download MT4/MT5</h3>
+                                    <ol class="text-light">
+                                        <li>Visit the official MetaTrader website or go to our <a
+                                                href="https://cnxtrade.com/download">Download Page</a>.</li>
+                                        <li>Select the version suitable for your operating system (Windows, macOS, iOS,
+                                            Android).</li>
+                                        <li>Download and install the software following the on-screen instructions.</li>
+                                        <li>Open the platform and log in using your CNXTrade account credentials.</li>
+                                    </ol>
+
+                                    <h3 class="text-light">Benefits of Using MT4/MT5 with CNXTrade</h3>
+                                    <ul class="text-light">
+                                        <li><strong>User-Friendly Interface:</strong> Intuitive design makes it easy for
+                                            traders of all levels to navigate and execute trades.</li>
+                                        <li><strong>Advanced Charting Tools:</strong> Access a wide range of technical
+                                            analysis tools, indicators, and customizable charts.</li>
+                                        <li><strong>Automated Trading:</strong> Utilize Expert Advisors (EAs) to
+                                            automate trading strategies and execute trades 24/7.</li>
+                                        <li><strong>Real-Time Data:</strong> Receive up-to-date market data and news
+                                            directly within the platform.</li>
+                                        <li><strong>Multi-Device Access:</strong> Trade seamlessly across desktop,
+                                            mobile, and web versions.</li>
+                                        <li><strong>Secure Transactions:</strong> Benefit from high-level security
+                                            protocols to protect your trading activities.</li>
+                                        <li><strong>Comprehensive Analysis:</strong> Leverage expert market analysis and
+                                            insights to inform your trading strategies.</li>
+                                    </ul>
+
+                                    <h3 class="text-light">Screenshots</h3>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="{% static 'img/61efdcd81bd6d418055c60c9_MT5.png' %}" width="1000px"
+                                                height="1000px" alt="MT4 Interface" class="img-fluid">
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-light">Why Choose CNXTrade?</h3>
+                                    <p>CNXTrade is dedicated to providing a superior trading experience. Our platform
+                                        offers comprehensive market coverage, real-time data, and expert analysis to
+                                        empower your trading decisions. Whether you are a day trader, long-term
+                                        investor, or financial institution, CNXTrade and the MT4/MT5 platforms provide
+                                        the tools and support you need to succeed.</p>
+
+                                    <h3 class="text-light">Features and Tools</h3>
+                                    <ul class="text-light">
+                                        <li><strong>Technical Indicators:</strong> Over 50 built-in indicators to
+                                            enhance your market analysis.</li>
+                                        <li><strong>Trading Signals:</strong> Access trading signals from successful
+                                            traders to inform your strategies.</li>
+                                        <li><strong>Market Depth:</strong> View the depth of market to gauge market
+                                            activity and liquidity.</li>
+                                        <li><strong>One-Click Trading:</strong> Execute trades quickly with a single
+                                            click for fast market entry.</li>
+                                        <li><strong>Custom Scripts:</strong> Create and use custom scripts to automate
+                                            repetitive tasks.</li>
+                                    </ul>
+
+
+                                    <div class="container mt-5">
+                                        <h3 class="text-light">FAQ</h3>
+                                        <div class="accordion" id="faqAccordion">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faqHeadingOne">
+                                                    <button class="accordion-button" type="button"
+                                                        onclick="toggleAccordion('faqOne')">
+                                                        What is the difference between MT4 and MT5?
+                                                    </button>
+                                                </h2>
+                                                <div id="faqOne" class="accordion-collapse">
+                                                    <div class="accordion-body">
+                                                        MT4 is primarily designed for forex trading, while MT5 offers
+                                                        more advanced features, supports a wider range of asset classes,
+                                                        and includes more timeframes and order types.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faqHeadingTwo">
+                                                    <button class="accordion-button" type="button"
+                                                        onclick="toggleAccordion('faqTwo')">
+                                                        Can I use both MT4 and MT5 with a single CNXTrade account?
+                                                    </button>
+                                                </h2>
+                                                <div id="faqTwo" class="accordion-collapse">
+                                                    <div class="accordion-body">
+                                                        Yes, you can use both MT4 and MT5 platforms with a single
+                                                        CNXTrade account. However, the two platforms operate
+                                                        independently, so you will need to download and install each one
+                                                        separately.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faqHeadingThree">
+                                                    <button class="accordion-button" type="button"
+                                                        onclick="toggleAccordion('faqThree')">
+                                                        How secure are my transactions on MT4/MT5?
+                                                    </button>
+                                                </h2>
+                                                <div id="faqThree" class="accordion-collapse">
+                                                    <div class="accordion-body">
+                                                        Both MT4 and MT5 employ high-level security measures, including
+                                                        data encryption and secure data transmission, to ensure the
+                                                        safety of your transactions and personal information.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <h3 class="text-light">Testimonials</h3>
+                                    <blockquote class="testimonial">
+                                        <p>"Using MT4 with CNXTrade has significantly improved my trading efficiency.
+                                            The platform is user-friendly, and the real-time data keeps me ahead of the
+                                            market trends." - John Smith, Professional Trader</p>
+                                        <h6>
+                                            John Smith
+                                            <span>Professional Trader</span>
+                                        </h6>
+                                    </blockquote>
+                                    <blockquote class="testimonial">
+                                        <p>"MT5's advanced tools and CNXTrade's excellent support make a perfect
+                                            combination for successful trading. I highly recommend it to both new and
+                                            experienced traders." - Emily Johnson, Investment Analyst</p>
+                                        <h6>
+                                            Emily Johnson
+                                            <span>Investment Analyst</span>
+                                        </h6>
+                                    </blockquote>
+
+                                    <h3 class="text-light">Get Started Today!</h3>
+                                    <p>Ready to enhance your trading experience with MT4/MT5 on CNXTrade? <a
+                                            href="https://cnxtrade.com/signup" class="btn btn-primary">Sign Up Now</a>
+                                        and start trading with the industry's most powerful platforms.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+
+
+
+    <!-- ... end Header -->
+
+
+
+    <script>
+        function toggleAccordion(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle('active');
+
+            // Ensure other accordions collapse when one is opened
+            const allCollapses = document.querySelectorAll('.accordion-collapse');
+            allCollapses.forEach((collapse) => {
+                if (collapse.id !== id) {
+                    collapse.classList.remove('active');
+                }
+            });
+
+            // Adjust button text
+            const buttons = document.querySelectorAll('.accordion-button');
+            buttons.forEach((button) => {
+                const targetId = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (targetId === id) {
+                    button.textContent = button.textContent.includes('-') ? button.textContent.replace('-', '+') : button.textContent.replace('+', '-');
+                } else {
+                    button.textContent = button.textContent.includes('-') ? button.textContent.replace('-', '+') : button.textContent;
+                }
+            });
+        }
+    </script>
+    {% endblock contents %}
+  
+

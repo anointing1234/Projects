@@ -1,0 +1,106 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% load humanize %}
+{% block contents %}
+{% load form_tags %}
+
+<div class="main-panel mb-1">
+    <div class="content-wrapper mt-5">
+        <div class="row flex-grow">
+            <!-- Header Section -->
+            <h4 class="text-center fw-bold text-dark">Contact Support</h4>
+            <h5 class="text-center mb-5 text-dark">Contact us anytime by sending us a message using the options below. We are at your service 24/7  response.</h5>
+            
+            <!-- Send Message Section -->
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card card-rounded shadow bg-light text-dark">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center mt-1">
+                            <div>
+                                <h3 class="text-dark fw-bold">Send a message</h3>
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'contact_support' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label text-dark">Email</label>
+                                {{ form.email|add_class:"form-control" }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.subject.id_for_label }}" class="form-label text-dark">Subject</label>
+                                {{ form.subject|add_class:"form-control" }}
+                                {% if form.subject.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.subject.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.message.id_for_label }}" class="form-label text-dark">Message</label>
+                                {{ form.message|add_class:"form-control" }}
+                                {% if form.message.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.message.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="btn btn-dark text-light">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact via WhatsApp Section -->
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card card-rounded shadow bg-light text-dark">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center mt-1 mb-3">
+                            <h3 class="text-dark fw-bold">Contact via WhatsApp</h3>
+                        </div>
+                        <div class="d-flex justify-content-center mt-1">
+                            <img src="{% static 'images/whatapp.png' %}" alt="WhatsApp Logo" height="200" width="200" class="me-2"> 
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="https://wa.me/yourwhatsappnumber" class="btn btn-success text-dark">
+                                <i class="fa fa-whatsapp me-2"></i>Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{{ message.tags }}',
+                title: '{{ message.message }}',
+                showConfirmButton: true
+            });
+        {% endfor %}
+    {% endif %}
+});
+</script>
+
+{% endblock contents %}

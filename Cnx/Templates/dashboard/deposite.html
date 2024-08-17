@@ -1,0 +1,118 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% block contents %}
+<div class="main-panel mb-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="content-wrapper mt-5">
+    <!-- Deposit Form Section -->
+    <div class="row flex-grow justify-content-center">
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card card-rounded shadow">
+          <div class="card-body">
+            <h4 class="card-title card-title-dash">Deposit</h4>
+            <form id="depositForm" method="POST" action="{% url 'deposit_submit' %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" name="amount" required>
+              </div>
+              <div class="form-group">
+                <label for="wallet">Wallet</label>
+                <select class="form-control" id="wallet" name="wallet" required>
+                  <option value="USD">USD</option>
+                  <option value="ETH">ETH</option>
+                  <option value="BTC">BTC</option>
+                  <option value="LTC">LTC</option>
+                  <option value="TRX">TRX</option>
+                  <option value="BCH">BCH</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="type">Deposit Type</label>
+                <input type="text" class="form-control" id="type" name="type" required value="Deposit">
+              </div>
+              <button type="button" id="depositButton" class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#depositButton').on('click', function() {
+      const wallet = $('#wallet').val();
+      $.ajax({
+        url: "{% url 'get_wallet_address' %}",
+        type: "GET",
+        data: { wallet: wallet },
+        success: function(response) {
+          if (response.wallet_address) {
+            const walletAddress = response.wallet_address;
+            const minDeposit = response.min_deposit; // Fetch minimum deposit amount from response
+            
+            Swal.fire({
+              title: 'Transfer to this Wallet Address',
+              html: `<p>Wallet Address: ${walletAddress}</p><p>Minimum Deposit: ${minDeposit}</p><p>Time left: <span id="timer">300</span> seconds</p>`,
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonText: 'Submit',
+              didOpen: () => {
+                const timerInterval = setInterval(() => {
+                  const timerElement = document.getElementById('timer');
+                  let timeLeft = parseInt(timerElement.innerText);
+                  timeLeft--;
+                  if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    Swal.close();
+                  }
+                  timerElement.innerText = timeLeft;
+                }, 1000);
+              }
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Validate minimum deposit amount
+                const amount = $('#amount').val();
+                if (parseFloat(amount) < minDeposit) {
+                  Swal.fire('Error', `Minimum deposit amount is ${minDeposit}`, 'error');
+                  return;
+                }
+                
+                // Proceed with form submission
+                $.ajax({
+                  url: "{% url 'deposit_submit' %}",
+                  type: "POST",
+                  data: $('#depositForm').serialize(),  // Serialize form data
+                  success: function() {
+                    Swal.fire({
+                      title: 'Success!',
+                      text: 'Deposit request sent. Please wait for confirmation.',
+                      icon: 'success'
+                    });
+                  },
+                  error: function(xhr, status, error) {
+                    Swal.fire('Error', 'Failed to submit deposit request', 'error');
+                  }
+                });
+              }
+            });
+          } else {
+            Swal.fire('Error', 'Wallet address not found', 'error');
+          }
+        },
+        error: function(xhr, status, error) {
+          Swal.fire('Error', 'Could not fetch wallet address', 'error');
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock contents %}

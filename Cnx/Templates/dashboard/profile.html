@@ -1,0 +1,184 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block contents %}
+<style>
+    .custom-card {
+        height: 400px;
+    }
+    .profile-pic {
+        height: 90px;
+        width: 90px;
+    }
+    .profile-section {
+        opacity: 1;
+        transition: opacity 0.1s ease-in-out;
+    }
+    .profile-section.d-none {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .but {
+        margin-left: 2cm;
+    }
+    .profile-section {
+        margin-top: 2cm;
+    }
+    .profile-pic {
+        width: 100px; /* Example size, adjust as needed */
+        height: 100px; /* Example size, adjust as needed */
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%; /* Ensures the image is a circle */
+    }
+    
+    
+    
+</style>
+
+
+
+<div class="main-panel mb-5">
+    <div class="content-wrapper mt-5">
+        <div class="row flex-grow">
+            <!-- User Profile Section -->
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card bg-light border shadow card-rounded">
+                    <div class="card-body mt-3">
+                        <div class="text-center border-left">
+                            <h2 class="mt-3 mb-4 fw-bold">Profile</h2>
+                            <div class="avatar avatar-xl mb-3">
+                                {% if request.user.profile_picture %}
+                                    <img src="{{ request.user.profile_picture.url }}" class="rounded-circle border border-2 border-white profile-pic" alt="User Avatar">
+                                {% else %}
+                                    <img src="{% static 'images/OIP.jpg' %}" class="rounded-circle border border-4 border-warning profile-pic" alt="User Avatar">
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4 mt-4">
+                                <h3 class="mb-0 mt-3 ">{{ request.user.username }}</h3>
+                                <h5 class="text-muted mb-1 mt-3">{{ request.user.email }}</h5>
+                              
+                                    <div class="mb-3">
+                                       <!-- templates/accounts/update_profile_picture.html -->
+                                        <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile_picture' %}" id="profilePictureForm">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-light py-2 mt-2 position-relative" onclick="document.getElementById('id_profile_picture').click();">
+                                                    <i class="fa fa-camera"></i> Update photo
+                                                </button>
+                                                <input type="file" class="d-none" id="id_profile_picture" name="profile_picture" aria-label="Upload" onchange="document.getElementById('profilePictureForm').submit();">
+                                            </div>
+                                        </form>
+
+                                        <script>
+                                            function handleFileChange(event) {
+                                                const fileInput = event.target;
+                                                const form = fileInput.form;
+                                                form.submit();
+                                            }
+                                        </script>
+                                    </div>                                     
+                            </div>
+                            <h5 class="mt-1">Available balance</h5>
+                            <button class="btn bg-white py-3 disabled">
+                                <h4 class="me-2 fw-bold mt-3">${{ request.user.balance.usdt_balance|floatformat:2|intcomma }} USD</h4>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Section -->
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card bg-light shadow card-rounded">
+                    <div class="card-body">
+                        <h5 class="card-title mb-1 fw-bold text-center">Profile information</h5>
+                        <p>You have full access to your information and you can change your details anytime</p>
+                        <div id="profileDisplay" class="mb-2 profile-section">
+                            <h5 class="mt-5 mb-4 text-center border border-white border-4 py-2"><strong>Username:</strong> {{ request.user.username }}</h5>
+                            <h5 class="mb-4 text-center border border-white border-4 py-2"><strong>Email:</strong> {{ request.user.email }}</h5>
+                            {% if request.user.phone %}
+                                <h5 class="mb-4 text-center border border-white border-4 py-2"><strong>Phone Number:</strong> {{ request.user.phone }}</h5>
+                            {% else %}
+                                <h5 class="mb-4 text-center"><strong>Phone Number:</strong> Not set</h5>
+                            {% endif %}
+                            {% if request.user.country %}
+                                <h5 class="mb-4 text-center border border-white border-4 py-2"><strong>Country:</strong> {{ request.user.country }}</h5>
+                            {% else %}
+                                <h5 class="mb-4 text-center"><strong>Country:</strong> Not set</h5>
+                            {% endif %}
+                            <button type="button" class="btn btn-primary mt-3 but" onclick="toggleEdit()">Edit Profile</button>
+                        </div>
+                        <div id="profileEdit" class="d-none profile-section">
+                            <h4>Edit Profile</h4>
+                            <form method="post" action="{% url 'update' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="username">Username:</label>
+                                    <input type="text" class="form-control" id="username" name="username" value="{% if form.username.value %}{{ form.username.value }}{% else %}{{ request.user.username }}{% endif %}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{% if form.email.value %}{{ form.email.value }}{% else %}{{ request.user.email }}{% endif %}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone">Phone Number:</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{% if form.phone.value %}{{ form.phone.value }}{% else %}{{ request.user.phone }}{% endif %}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="country">Country:</label>
+                                    <input type="text" class="form-control" id="country" name="country" value="{% if form.country.value %}{{ form.country.value }}{% else %}{{ request.user.country }}{% endif %}">
+                                </div>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary ms-2" onclick="toggleEdit()">Cancel</button>
+                            </form>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+    function toggleEdit() {
+        var displaySection = document.getElementById('profileDisplay');
+        var editSection = document.getElementById('profileEdit');
+        displaySection.classList.toggle('d-none');
+        editSection.classList.toggle('d-none');
+    }
+
+    {% if messages %}
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ message }}',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                {% else %}
+                    Swal.fire({
+                        icon: '{{ message.tags }}',
+                        title: '{{ message.tags|capfirst }}',
+                        text: '{{ message }}',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                {% endif %}
+            {% endfor %}
+        });
+    {% endif %}
+</script>
+
+{% endblock contents %}

@@ -1,0 +1,157 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% static "images" as img %}
+{% static "assests" as assests %}
+{% load humanize %}
+{% block contents %}
+
+
+
+
+       
+<!-- partial -->
+<div class="main-panel mb-5">
+    <div class="content-wrapper mt-5">
+        <div class="row flex-grow-1">
+            <h4 class="text-center mb-5 fw-bold">Subscription plans</h4>
+                      {% for sub_plan in sub_plan %}
+                          <div class="col-md-6 grid-margin stretch-card">
+                              <div class="card card-rounded shadow bg-light text-dark">
+                                  <div class="card-body">
+                                      <h4 class="card-title card-title-dash text-uppercase">{{ sub_plan.plan_name }} Investment Plan</h4>
+                                      <div class="mt-4">
+                                          <h4 class="fw-bold mb-3 d-flex align-items-center">
+                                              {% if sub_plan.plan_name == "EUR/USD" %}
+                                              <img src="{% static 'img/—Pngtree—candlestick graph 3d icon render_8651730.png' %}" alt="EUR/USD Logo" height="30" width="30" class="me-2 crypto-logo">                 
+                                              {% elif sub_plan.plan_name == "USD/JPY" %}
+                                              <img src="{% static 'img/—Pngtree—candlestick graph 3d icon render_8651730.png' %}" alt="USD/JPY Logo" height="30" width="30" class="me-2 crypto-logo">
+                                              {% elif sub_plan.plan_name == "GBP/USD" %}
+                                              <img src="{% static 'img/—Pngtree—candlestick graph 3d icon render_8651730.png' %}" alt="GBP/USD Logo" height="30" width="30" class="me-2 crypto-logo">
+                                              {% elif sub_plan.plan_name == "USD/CAD" %}
+                                              <img src="{% static 'img/—Pngtree—candlestick graph 3d icon render_8651730.png' %}" alt="USD/CAD Logo" height="30" width="30" class="me-2 crypto-logo">
+                                              {% endif %}
+                                              {{ plan.name }}
+                                          </h4>
+                                          <div class="card bg-light mb-3">
+                                              <div class="card-body text-dark">
+                                                  <div class="price mb-2">
+                                                      <div class="price-sup-title">Investment Amount:</div>
+                                                      <div class="price-value">min: {{ sub_plan.investment_amount_min }} - max: {{  sub_plan.investment_amount_max }}</div>
+                                                  </div>
+                                                  <div class="price mb-2">
+                                                      <div class="price-sup-title">Expected Profit:</div>
+                                                      <div class="price-value">min: {{ sub_plan.expected_profit_min }}% - max: {{  sub_plan.expected_profit_max }}%</div>
+                                                  </div>
+                                                  <div class="price mb-2">
+                                                      <div class="price-sup-title">Duration:</div>
+                                                      <div class="price-value">{{ sub_plan.duration_min_months }} months - {{  sub_plan.duration_max_months }} months</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <button type="button" class="btn btn-lg btn-outline-dark w-100" onclick="investPrompt({{ sub_plan.id }}, '{{ sub_plan.plan_name }}', {{ sub_plan.investment_amount_min }}, {{ sub_plan.investment_amount_max }})">Invest in {{ sub_plan.plan_name }} Now!</button>
+
+                                        </div>
+                                  </div>
+                              </div>
+                          </div>
+                      {% endfor %}
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function investPrompt(planId, planType, minAmount, maxAmount) {
+    fetch("{% url 'sub_check_active_investment' %}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': "{{ csrf_token }}"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.active_investment) {
+        Swal.fire({
+          title: 'Active Investment Detected',
+          text: 'You already have an active investment plan. Do you want to update it?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, update it',
+          cancelButtonText: 'No, cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            promptInvestmentAmount(planId, planType, minAmount, maxAmount, true);
+          }
+        });
+      } else {
+        promptInvestmentAmount(planId, planType, minAmount, maxAmount, false);
+      }
+    });
+  }
+
+  function promptInvestmentAmount(planId, planType, minAmount, maxAmount, updateExisting) {
+    Swal.fire({
+      title: 'Enter Amount to Invest',
+      input: 'number',
+      inputLabel: 'Investment Amount',
+      inputAttributes: {
+        min: minAmount,
+        max: maxAmount
+      },
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to enter an amount!'
+        }
+        if (value < minAmount || value > maxAmount) {
+          return `Amount must be between ${minAmount} and ${maxAmount}`
+        }
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Invest'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const amount = result.value;
+        const csrfToken = "{{ csrf_token }}";
+        fetch("{% url 'invest_subscription' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify({
+            plan_id: planId,
+            amount: amount,
+            plan_type: planType,
+            update_existing: updateExisting
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            Swal.fire('Success', data.message, 'success');
+          } else if (data.confirm_update) {
+            Swal.fire({
+              title: 'Active Investment Detected',
+              text: data.message,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, update it',
+              cancelButtonText: 'No, cancel'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                promptInvestmentAmount(planId, planType, minAmount, maxAmount, true);
+              }
+            });
+          } else {
+            Swal.fire('Error', data.message, 'error');
+          }
+        });
+      }
+    });
+  }
+</script>
+
+{% endblock contents %}
+

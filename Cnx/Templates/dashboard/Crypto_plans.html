@@ -1,0 +1,149 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% block contents %}
+<div class="main-panel mb-5 ">
+  <div class="content-wrapper mt-5">
+    <div class="row flex-grow-1">
+      <h4 class="text-center mb-5 fw-bold">Crypto investment plans</h4>
+      {% for plan in plans %}
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card card-rounded shadow bg-light text-dark">
+            <div class="card-body">
+              <h4 class="card-title card-title-dash text-uppercase">{{ plan.plan_type }} Investment Plan</h4>
+              <div class="mt-4">
+                <h4 class="fw-bold mb-3 d-flex align-items-center">
+                  {% if plan.plan_type == "USD" %}
+                    <img src="{% static 'img/dollar.png' %}" alt="USD Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% elif plan.plan_type == "ETH" %}
+                    <img src="{% static 'img/if_etherium_eth_ethcoin_crypto_2844386.png' %}" alt="ETH Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% elif plan.plan_type == "BTC" %}
+                    <img src="{% static 'img/if_bitcoin_2745023.png' %}" alt="BTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% elif plan.plan_type == "LTC" %}
+                    <img src="{% static 'img/if_litecion_ltc_lite_coin_crypto_2844390.png' %}" alt="LTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% elif plan.plan_type == "TRX" %}
+                    <img src="{% static 'img/trc.png' %}" alt="TRX Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% elif plan.plan_type == "BCH" %}
+                    <img src="{% static 'img/bch.png' %}" alt="BCH Logo" height="30" width="30" class="me-2 crypto-logo">
+                  {% endif %}
+                  {{ plan.name }}
+                </h4>
+                <div class="card bg-light mb-3">
+                  <div class="card-body text-dark">
+                    <div class="price mb-2">
+                      <div class="price-sup-title">Investment Amount:</div>
+                      <div class="price-value">min: {{ plan.investment_amount_min }} - max: {{ plan.investment_amount_max }}</div>
+                    </div>
+                    <div class="price mb-2">
+                      <div class="price-sup-title">Expected Profit:</div>
+                      <div class="price-value">min: {{ plan.expected_profit_min }}% - max: {{ plan.expected_profit_max }}%</div>
+                    </div>
+                    <div class="price mb-2">
+                      <div class="price-sup-title">Duration:</div>
+                      <div class="price-value">{{ plan.duration_min_months }} months - {{ plan.duration_max_months }} months</div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-lg btn-outline-dark w-100" onclick="investPrompt({{ plan.id }}, '{{ plan.plan_type }}', {{ plan.investment_amount_min }}, {{ plan.investment_amount_max }})">Invest in {{ plan.plan_type }} Now!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function investPrompt(planId, planType, minAmount, maxAmount) {
+    fetch("{% url 'check_active_investment' %}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': "{{ csrf_token }}"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.active_investment) {
+        Swal.fire({
+          title: 'Active Investment Detected',
+          text: 'You already have an active investment plan. Do you want to update it?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, update it',
+          cancelButtonText: 'No, cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            promptInvestmentAmount(planId, planType, minAmount, maxAmount, true);
+          }
+        });
+      } else {
+        promptInvestmentAmount(planId, planType, minAmount, maxAmount, false);
+      }
+    });
+  }
+
+  function promptInvestmentAmount(planId, planType, minAmount, maxAmount, updateExisting) {
+    Swal.fire({
+      title: 'Enter Amount to Invest',
+      input: 'number',
+      inputLabel: 'Investment Amount',
+      inputAttributes: {
+        min: minAmount,
+        max: maxAmount
+      },
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to enter an amount!'
+        }
+        if (value < minAmount || value > maxAmount) {
+          return `Amount must be between ${minAmount} and ${maxAmount}`
+        }
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Invest'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const amount = result.value;
+        const csrfToken = "{{ csrf_token }}";
+        fetch("{% url 'invest' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify({
+            plan_id: planId,
+            amount: amount,
+            plan_type: planType,
+            update_existing: updateExisting
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            Swal.fire('Success', data.message, 'success');
+          } else if (data.confirm_update) {
+            Swal.fire({
+              title: 'Active Investment Detected',
+              text: data.message,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, update it',
+              cancelButtonText: 'No, cancel'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                promptInvestmentAmount(planId, planType, minAmount, maxAmount, true);
+              }
+            });
+          } else {
+            Swal.fire('Error', data.message, 'error');
+          }
+        });
+      }
+    });
+  }
+</script>
+
+{% endblock contents %}

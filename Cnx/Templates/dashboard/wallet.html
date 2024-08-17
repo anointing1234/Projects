@@ -1,0 +1,201 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+{% static "images" as img %}
+{% static "assests" as assests %}
+{% load humanize %}
+{% block contents %}
+
+
+
+        <!-- partial -->
+        <div class="main-panel mb-5 ">
+          <div class="content-wrapper mt-5">
+           
+            <div class="row flex-grow">
+                <!-- Card 1: USD Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card card-rounded shadow  bg-dark">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash text-light">Main wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3 text-light"><div class="d-flex align-items-center">
+                                            <img src="{% static 'img/dollar.png' %}" alt="USDT Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            USD
+                                          </div></h4>
+                                        <h2 class="me-2 fw-bold text-light">${{ request.user.balance.usdt_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2: ETH Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash ">
+                                   Eth wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3 ">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'img/if_etherium_eth_ethcoin_crypto_2844386.png' %}" height="30" width="30" alt="ETH Logo" class="me-2 crypto-logo">
+                                                ETH
+                                              </div>
+                                        </h4>
+                                        <h2 class="me-2 fw-bold ">{{ request.user.balance.eth_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3: BTC Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Btc wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">    <img src="{% static 'img/if_bitcoin_2745023.png' %}" alt="BTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            BTC</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.btc_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4: LTC Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Ltc wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">    <img src="{% static 'img/if_litecion_ltc_lite_coin_crypto_2844390.png' %}" alt="LTC Logo" height="30" width="30" class="me-2 crypto-logo">
+                                            LTC</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.ltc_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5: TRX Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Trx wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3">     <img src="{% static 'img/trc.png' %}" height="30" width="30" alt="TRX Logo" class="me-2 crypto-logo">
+                                            TRX</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.trx_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6: BCH Balance -->
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card bg-light shadow  card-rounded">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start mt-1">
+                                <div>
+                                    <h4 class="card-title card-title-dash">Bch wallet</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                    <div>
+                                        <h4 class="me-2 fw-bold f-b mb-3"><img src="{% static 'img/bch.png' %}" height="30" width="30" alt="BCH Logo" class="me-2 crypto-logo">
+                                            BCH</h4>
+                                        <h2 class="me-2 fw-bold">{{ request.user.balance.bch_balance|floatformat:2|intcomma }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-start mb-2 mt-5">
+                                    <a href="{% url 'withdraw_page' %}" class="btn btn-dark me-2 text-light">Withdraw</a>
+                                    <a href="{% url 'deposite' %}" class="btn btn-primary text-light">Deposit</a>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+          
+{% endblock contents %}

@@ -1,0 +1,51 @@
+{% load static %}
+{% static "img" as img %}
+
+<footer class="footer ">
+    <div class="d-sm-flex justify-content-center ">
+  <span class="float-none float-sm-end d-block mt-1 mt-sm-0 text-center">Cnx Trade</a> - Investment changing lifes <span id="year"></span>
+   </span>
+   <script>
+    document.getElementById('year').innerText = new Date().getFullYear() + '.';
+   </script>
+    </div>
+  </footer>
+  <!-- partial -->
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Add this in your base template or profile template -->
+
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="{% static 'vendors/chart.js/chart.umd.js' %}"></script>
+<script src="{% static 'vendors/progressbar.js/progressbar.min.js' %}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{% static 'js/off-canvas.js' %}"></script>
+<script src="{% static 'js/template.js' %}"></script>
+<script src="{% static 'js/settings.js' %}"></script>
+<script src="{% static 'js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'js/todolist.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+<script src="{% static 'js/crypto-exchange.js' %}"></script>
+<!-- Include Chart.js and Moment.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment"></script>
+
+
+{% include 'sections/script.html' %}
+
+
+</body>
+</html>

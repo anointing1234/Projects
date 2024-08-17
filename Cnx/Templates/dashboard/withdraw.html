@@ -1,0 +1,122 @@
+{% extends 'layouts/dashboard_base.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="main-panel mb-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="content-wrapper mt-5">
+    <!-- Withdraw Form Section -->
+   <!-- Withdraw Form Section -->
+<div class="row flex-grow justify-content-center">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card card-rounded shadow">
+      <div class="card-body">
+        <h4 class="card-title card-title-dash">Withdraw Funds</h4>
+        <form method="POST" action="{% url 'withdraw_submit' %}" id="withdrawForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" id="amount" name="amount" required>
+          </div>
+          <div class="form-group">
+            <label for="wallet">Wallet</label>
+            <select class="form-control" id="wallet" name="wallet" required>
+              <option value="USD">USD</option>
+              <option value="ETH">ETH</option>
+              <option value="BTC">BTC</option>
+              <option value="LTC">LTC</option>
+              <option value="TRX">TRX</option>
+              <option value="BCH">BCH</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="wallet_address">Withdraw address</label>
+            <input type="text" class="form-control" id="wallet_address" name="wallet_address" required>
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" id="type" name="type" required>
+              <option value="Withdraw">Withdraw</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-primary mt-3" id="withdrawSubmitBtn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</div>
+</div>
+
+<!-- Load SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('withdrawSubmitBtn').addEventListener('click', function() {
+      Swal.fire({
+        title: 'Enter Withdrawal Password',
+        html: `<input type="password" id="withdraw_password" class="swal2-input" placeholder="Withdrawal Password">`,
+        confirmButtonText: 'Submit',
+        focusConfirm: false,
+        preConfirm: () => {
+          const withdraw_password = Swal.getPopup().querySelector('#withdraw_password').value
+          if (!withdraw_password) {
+            Swal.showValidationMessage(`Please enter the withdrawal password`)
+          }
+          return { withdraw_password: withdraw_password }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const withdraw_password = result.value.withdraw_password;
+          // Make an AJAX request to check the withdrawal password
+          fetch("{% url 'check_withdraw_password' %}", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ withdraw_password: withdraw_password })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Make another AJAX request to submit the withdrawal form
+              const formData = new FormData(document.getElementById('withdrawForm'));
+              fetch("{% url 'withdraw_submit' %}", {
+                method: 'POST',
+                headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+              })
+              .then(response => response.json())
+              .then(result => {
+                if (result.status === 'success') {
+                  Swal.fire('Success', 'Withdrawal successful', 'success');
+                } else {
+                  Swal.fire('Error', result.message, 'error');
+                }
+              })
+              .catch(error => {
+                Swal.fire('Error', 'An error occurred while processing your request', 'error');
+              });
+            } else {
+              Swal.fire('Error', 'Incorrect withdrawal password', 'error');
+            }
+          })
+          .catch(error => {
+            Swal.fire('Error', 'An error occurred while processing your request', 'error');
+          });
+        }
+      });
+    });
+  });
+  
+ 
+</script>
+
+{% endblock contents %}

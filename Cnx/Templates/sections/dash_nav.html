@@ -1,0 +1,67 @@
+ <!-- partial:partials/_sidebar.html -->
+ {% load static %}
+{% static "img" as img %}
+ 
+ 
+ <nav class="sidebar sidebar-offcanvas   shadow  text-light" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item mt-5">
+        <a class="nav-link" href="{% url 'dashboard' %}">
+          <i class="mdi mdi-grid-large menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item nav-category">Menu</li>
+      <li class="nav-item">
+        <a class="nav-link"  href="{% url 'crypto_exchange' %}">
+          <i class="fa fa-database menu-icon "></i>
+          <span class="menu-title">Crypto exchange</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+          <i class="fa fa-cubes menu-icon"></i>
+          <span class="menu-title">plans</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="form-elements">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"><a class="nav-link" href="{% url 'Crypto_plan' %}">Crypto</a></li>
+          </ul>
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"><a class="nav-link" href="{% url 'subscription_plan' %}">Subscription</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="{% url 'Profile' %}" >
+          <i class="fa fa-user-circle menu-icon"></i>
+          <span class="menu-title">profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"href="{% url 'wallet' %}" >
+          <i class="fa fa-money menu-icon"></i>
+          <span class="menu-title">wallets</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'settings' %}" >
+          <i class="menu-icon mdi mdi-layers-outline"></i>
+          <span class="menu-title">Settings</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'contact_support' %}">
+          <i class="menu-icon mdi mdi-account-circle-outline"></i>
+          <span class="menu-title">Contact support</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'Login' %}"">
+          <i class="fa fa-power-off menu-icon"></i>
+          <span class="menu-title">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
